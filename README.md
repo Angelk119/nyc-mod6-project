@@ -1,9 +1,13 @@
 # ♻️ NYC Waste Management Analytics: Recycling Performance Prediction
 --------
+![download](https://github.com/user-attachments/assets/f3573626-eff2-4b12-b6a5-814150b3ef38)
 
 ## 1. Project Overview
 
-This project develops a predictive analytics solution to help the NYC Department of Sanitation (DSNY) identify community districts at risk of falling below the 20% recycling target. By analyzing historical waste collection patterns, the system forecasts which districts are likely to achieve high recycling performance (>20% recycling ratio) a month in advance.
+This project develops a predictive analytics solution to help the **NYC Department of Sanitation(DSNY)** identify community districts at risk of falling below the 20% recycling ratio target. By analyzing historical waste collection patterns, the system forecasts which districts are likely to achieve high recycling performance (>20% recycling ratio) one month in advance.
+
+**Teaser**: This project delivers a deployed predictive model accessible through an interactive Streamlit application that forecasts community districts’ recycling performance one month in advance, correctly identifying 90% of districts at risk of missing the 20% recycling target.
+<img width="2940" height="1912" alt="Screenshot 2025-12-11 at 8 11 40 AM" src="https://github.com/user-attachments/assets/b9bd195f-d6a8-4497-b640-45614ce099f2" />
 
 -------
 ## 2. Primary Business Objectives
@@ -149,3 +153,31 @@ Trained on 2022-01 2025-04 data, tested on 2025-05 to 2025-10 (last 6 months)
 | Precision| 82.7% | When the model predicts a district is performing well, it is usually correct. |
 | F1-Score | 87.8% | Balances recall and precision, showing strong overall classification performance. |
 | AUC-ROC  | 0.98  | The model is very effective at separating high vs low recycling performance. |
+
+## 9. Business Impact & Ethical Considerations
+This model supports smarter decision-making for DSNY by enabling proactive action rather than reactive cleanup.
+
+First, it helps optimize resource allocation by identifying community districts that are likely to underperform in recycling, allowing DSNY to target education campaigns, outreach, and enforcement where they are most needed.
+
+Second, it contributes to cost savings by reducing contamination in recycling streams. By intervening early in at-risk districts, DSNY can prevent recyclable materials from being diverted to refuse, lowering processing and landfill costs.
+
+Third, the model enables goal tracking by providing a consistent, data-driven way to monitor progress toward NYC’s Zero Waste objectives over time and across districts.
+
+Finally, it supports equity assessment by highlighting districts that may require additional services, infrastructure, or community support—helping ensure that recycling performance improvements are citywide and equitable.
+
+**Ethics & Impact**
+- No personal or sensitive data used
+- Predictions are advisory, not punitive
+- Designed to guide equitable interventions
+
+**Limitations**
+- Monthly granularity limits short-term forecasting
+- Population data is static (2010 Census)
+- Behavioral and policy factors not included
+
+## 10. Future Work
+- Time-series forecasting for tonnage volumes
+- District clustering for targeted interventions
+
+#### *COMMENTS:*
+Two target definitions were tested during model development. The recycling ratio–based classification demonstrated better interpretability and alignment with operational decision-making, and was therefore chosen for our streamlit app.
