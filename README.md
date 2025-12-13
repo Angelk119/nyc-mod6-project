@@ -1,12 +1,12 @@
 # ♻️ NYC Waste Management Analytics: Recycling Performance Prediction
 --------
 
-## Project Overview
+## 1. Project Overview
 
 This project develops a predictive analytics solution to help the NYC Department of Sanitation (DSNY) identify community districts at risk of falling below the 20% recycling target. By analyzing historical waste collection patterns, the system forecasts which districts are likely to achieve high recycling performance (>20% recycling ratio) a month in advance.
 
 -------
-## Primary Business Objectives
+## 2. Primary Business Objectives
 1. Predictive Monitoring: Forecast recycling performance at the community district level
 
 2. Resource Optimization: Enable DSNY to proactively allocate education and outreach resources
@@ -15,12 +15,12 @@ This project develops a predictive analytics solution to help the NYC Department
 
 4. Anomaly Detection: Identify districts with unusually high refuse generation
 -----------
-## Dataset Information
-### Primary Dataset: DSNY Monthly Tonnage Data
+## 3. Dataset Information
+### 3.1.  Primary Dataset: DSNY Monthly Tonnage Data
 Source: NYC Open Data - [DSNY Monthly Tonnage](https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5/about_data)
 - Coverage: Monthly waste collection data by community district (2022-2025)
 - Records: ~2,700 monthly district-level observations
-### Secondary Dataset: Population Data
+### 3.2. Secondary Dataset: Population Data
 - Source: NYC Open Data - [Population by Community District](https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2/about_data)
 - Coverage: 2010 Census data mapped to community districts
 
@@ -38,11 +38,11 @@ Source: NYC Open Data - [DSNY Monthly Tonnage](https://data.cityofnewyork.us/Cit
 | otherorganicstons     | Other organics (tons)                                         | Continuous        |
 | xmastreetons          | Christmas tree collection (tons)                              | Continuous        |
 | population_2010       | 2010 Census population                                        | Integer           |
-| recycling_ratio       | (Paper + MGP) / (Paper + MGP + Refuse)                        | Continuous [0–1]  |
-| high_recycling        | Binary flag: recycling_ratio > 0.2                            | Binary            |
+| recycling_ratio       | (Paper + MGP) / (Paper + MGP + Refuse) -engineered                      | Continuous [0–1]  |
+| high_recycling        | Binary flag: recycling_ratio > 0.2 -engineered                         | Binary            |
 ---------
-### Environment Setup & Reproduction
-1. Environment setup
+## 4. Environment Setup & Reproduction
+### 4.1. Environment setup
 ```bash
 # Clone the repo
 git clone [https://github.com/yourusername/project.git](https://github.com/yourusername/project.git)
@@ -55,7 +55,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 ```
-2. Data Download
+### 4.2. Data Download
 - Download the CSVs from [NYC open data link1](https://data.cityofnewyork.us/City-Government/DSNY-Monthly-Tonnage-Data/ebb7-mvp5/about_data) AND [NYC open data link2](https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Community-Districts/xi7c-iiu2/about_data)
 
 - Save them to the datasets/ folder (ensure to change the paths accordingly in the notebooks).
@@ -65,4 +65,64 @@ pip install -r requirements.txt
 
 **IMPORTANT:** Ensure to check files paths in the loading process.
 
+## 5. Exploratory data analysis
+- Our **Eda** focused on understanding **waste composition**, **trends** and **correlations**
+For our distribution analysis, histograms were created for: **Refuse tons collected** ,**Paper tons collected**, **MGP tons collected** revealing a strong right skew and a large inter-district variability, justifying standardization of features and month_district level aggregations to conserve district differences.
 
+<img width="1489" height="490" alt="waste_type_distribution" src="https://github.com/user-attachments/assets/d73edcd6-78cb-4600-a5ff-1770be8dc74a" />
+
+- **Pearson correlations**  between refuse, paper, and MGP showed:
+- Moderate correlations
+- Clear separation between refuse and recyclable streams
+This supported modeling them as distinct behavioral signals, not redundant features; (avoiding multicollinearity)
+
+<img width="567" height="503" alt="corelation" src="https://github.com/user-attachments/assets/c1a86b4d-a73f-4038-9b00-34e246e6769a" />
+
+Time Series Analysis for **refuse tons collected** with **Monthly borough-level aggregation** showed:
+
+- Strong seasonality with similar patterns for all borough
+- Borough-specific tonnage amount
+- Long-term stability suitable for lag-based forecasting
+
+<img width="989" height="490" alt="refuse_borough_over_time" src="https://github.com/user-attachments/assets/c736b979-42d9-4427-b62c-0f912a474886" />
+
+## 6. Feature engineering: Lag Features (Core Predictive Signals)
+Lag features were engineered per borough and community district to ensure locality consistency.
+### Lag-1 (previous month)
+- refuse_lag1
+- paper_lag1
+- mgp_lag1
+### Lag-12 (same month previous year)
+- refuse_lag12
+
+These features capture momentum and seasonality, avoid data leakage and reflect what DSNY would realistically know at prediction time\
+Missing lag values were filled using group-level historical means, preserving temporal integrity.
+### Population Normalization
+Population data was merged at the borough–district level.
+Derived feature:
+
+```ini
+refuse_per_capita_2010 = refusetonscollected / population_2010
+```
+This allows a **fair comparison** across districts and a **density-adjusted** interpretation.
+
+### Target Engineering
+**Recycling Ratio:** The core performance metric:
+```ini
+recycling_ratio =
+(papertonscollected + mgptonscollected) /
+(papertonscollected + mgptonscollected + refusetonscollected)
+```
+This aligns with real-world recycling performance definitions.
+
+**Classification Target:** high_recycling
+
+Binary target defined as:
+```ini
+high_recycling = 1 if recycling_ratio > 0.20 else 0
+```
+**Rationale:**
+
+- 20% is the top 25% percentile of recycling ratio, making it a clear and inrterpretable benchmark
+- Converts a continuous metric into an actionable decision signal
+- Enables classification modeling and operational thresholds
