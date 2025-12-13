@@ -93,12 +93,6 @@ Time Series Analysis for **refuse tons collected** with **Monthly borough-level 
 
 <img width="989" height="490" alt="refuse_borough_over_time" src="https://github.com/user-attachments/assets/c736b979-42d9-4427-b62c-0f912a474886" />
 
-- Disparity observed in districts' recycling ratio
-<img width="1187" height="590" alt="top5" src="https://github.com/user-attachments/assets/e3e54c0a-461e-42b8-9c9f-5b698d81de2a" />
-
-<img width="1184" height="584" alt="bottom5" src="https://github.com/user-attachments/assets/841a3283-15e2-472c-a80d-b661f7102aef" />
-
-
 ## 6. Feature engineering: Lag Features (Core Predictive Signals)
 Lag features were engineered per borough and community district to ensure locality consistency.
 ### Lag-1 (previous month)
