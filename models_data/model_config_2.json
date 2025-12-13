@@ -1,0 +1,10 @@
+{
+  "optimal_threshold": 0.8568899025862625,
+  "business_threshold": 0.6,
+  "metrics_at_business_threshold": {
+    "accuracy": 0.9322033898305084,
+    "precision": 0.8269230769230769,
+    "recall": 0.9347826086956522,
+    "f1": 0.8775510204081632
+  }
+}
