@@ -21,6 +21,8 @@ This project develops a predictive analytics solution to help the **NYC Departme
 3. Target Achievement: Support NYC's goal of increasing recycling rates across all boroughs
 
 4. Anomaly Detection: Identify districts with unusually high refuse generation
+
+##### SLIDES PRESENTATION LINK: [CLICK HERE](https://docs.google.com/presentation/d/1RNbVSRKBp2s9ffdBxp6cl1iulaJCS3t2tGzqoKuc85o/edit?usp=sharing)
 -----------
 ## 3. Dataset Information
 ### 3.1.  Primary Dataset: DSNY Monthly Tonnage Data
@@ -184,3 +186,7 @@ Finally, it supports equity assessment by highlighting districts that may requir
 
 #### *COMMENTS:*
 Two target definitions were tested during model development. The recycling ratio–based classification demonstrated better interpretability and alignment with operational decision-making, and was therefore chosen for our streamlit app.
+
+## Contributors
+- [Angel Bautista](https://www.linkedin.com/in/angelgbautista/): Project manager, App Builder
+- [Thierno Barry](https://www.linkedin.com/in/thierno-barry-analyst/): Python Programmer, Modeling Process
