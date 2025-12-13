@@ -126,3 +126,26 @@ high_recycling = 1 if recycling_ratio > 0.20 else 0
 - 20% is the top 25% percentile of recycling ratio, making it a clear and inrterpretable benchmark
 - Converts a continuous metric into an actionable decision signal
 - Enables classification modeling and operational thresholds
+
+## 7. Modeling Approach
+**Model Type**: Logistic Regression which is chosen because of:
+- High interpretability
+- Probabilistic outputs
+- Suitable for policy and operations teams
+
+**Key Characteristics**
+- Probability-based predictions
+- Threshold-controlled classification (alligned with business problem)
+- Balanced class handling
+- Feature scaling and encoding handled via pipeline (StandardScaler and Onehot encoding)
+
+
+## 8. Evaluation metrics
+Trained on 2022-01 2025-04 data, tested on 2025-05 to 2025-10 (last 6 months) 
+| Metric    | Value | Business Interpretation |
+|-----------|-------|--------------------------|
+| Accuracy  | 93.2% | Out of all district–month observations, the model correctly predicts above/below recycling performance 93.2% of the time. |
+| Recall   | 93.5% | Of all district–months that truly had **low recycling performance**, 93.5% were correctly identified by the model (most important for intervention). |
+| Precision| 82.7% | When the model predicts a district is performing well, it is usually correct. |
+| F1-Score | 87.8% | Balances recall and precision, showing strong overall classification performance. |
+| AUC-ROC  | 0.98  | The model is very effective at separating high vs low recycling performance. |
